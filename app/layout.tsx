@@ -14,10 +14,41 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
+/* export const metadata: Metadata = {
+  title: 'StickyBoard — Your Digital Sticky Notes',
+  description:
+    'A beautiful sticky notes app built with Next.js. Create, organize, and color-code your notes.',
+}; */
+
 export const metadata: Metadata = {
   title: 'StickyBoard — Your Digital Sticky Notes',
   description:
     'A beautiful sticky notes app built with Next.js. Create, organize, and color-code your notes.',
+
+  openGraph: {
+    title: 'StickyBoard — Your Digital Sticky Notes',
+    description:
+      'Create, organize, and color-code your notes beautifully.',
+    url: 'https://sticky-notes-ebon.vercel.app/',
+    siteName: 'StickyBoard',
+    images: [
+      {
+        url: '/sticky-note.png', // must be inside /public
+        width: 1200,
+        height: 630,
+        alt: 'StickyBoard App Preview',
+      },
+    ],
+    type: 'website',
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'StickyBoard — Your Digital Sticky Notes',
+    description:
+      'Create, organize, and color-code your notes beautifully.',
+    images: ['/sticky-note.png'],
+  },
 };
 
 export default function RootLayout({
