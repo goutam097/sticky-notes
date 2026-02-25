@@ -1,0 +1,173 @@
+.card {
+  position: relative;
+  border-radius: 16px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
+  overflow: hidden;
+  animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.85) translateY(-10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.card:hover {
+  transform: translateY(-4px) rotate(0.5deg);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.deleting {
+  opacity: 0;
+  transform: scale(0.8) rotate(-3deg) !important;
+  pointer-events: none;
+}
+
+/* Color themes */
+.yellow { background: #FFF9C4; border-top: 6px solid #F9A825; }
+.pink   { background: #FCE4EC; border-top: 6px solid #E91E63; }
+.blue   { background: #E3F2FD; border-top: 6px solid #1565C0; }
+.green  { background: #E8F5E9; border-top: 6px solid #2E7D32; }
+.purple { background: #F3E5F5; border-top: 6px solid #7B1FA2; }
+
+[data-theme="dark"] .yellow { background: #3D3600; border-top-color: #F9A825; }
+[data-theme="dark"] .pink   { background: #3D0B1A; border-top-color: #E91E63; }
+[data-theme="dark"] .blue   { background: #0D253D; border-top-color: #42A5F5; }
+[data-theme="dark"] .green  { background: #0D2B10; border-top-color: #66BB6A; }
+[data-theme="dark"] .purple { background: #2A1030; border-top-color: #CE93D8; }
+
+/* Header */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 6px;
+}
+
+.dragHandle {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  cursor: grab;
+  padding: 4px;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+}
+.card:hover .dragHandle { opacity: 0.7; }
+.dragHandle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+}
+
+.actions { display: flex; gap: 6px; }
+
+.colorBtn, .deleteBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.colorBtn:hover { background: rgba(0,0,0,0.08); transform: scale(1.15); }
+.deleteBtn { font-size: 12px; font-weight: 700; color: #999; }
+.deleteBtn:hover { background: rgba(220,0,0,0.1); color: #e53935; transform: scale(1.15); }
+.colorBtn.active { background: rgba(0,0,0,0.1); }
+
+/* Color Picker */
+.colorPicker {
+  display: flex;
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.colorOption {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.colorOption:hover { transform: scale(1.2); }
+.colorOption.yellow { background: #F9A825; }
+.colorOption.pink   { background: #E91E63; }
+.colorOption.blue   { background: #1565C0; }
+.colorOption.green  { background: #2E7D32; }
+.colorOption.purple { background: #7B1FA2; }
+.colorOption.selected { border-color: rgba(0,0,0,0.5); transform: scale(1.15); }
+.checkmark { color: white; font-size: 13px; font-weight: 900; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+
+/* Title */
+.title {
+  font-family: 'Caveat', 'Patrick Hand', cursive;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  width: 100%;
+  padding: 6px 16px 2px;
+  line-height: 1.4;
+  overflow: hidden;
+  min-height: 40px;
+  box-sizing: border-box;
+}
+.title::placeholder { opacity: 0.4; }
+
+/* Content */
+.content {
+  font-family: 'Caveat', 'Patrick Hand', cursive;
+  font-size: 1rem;
+  color: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  width: 100%;
+  padding: 4px 16px 8px;
+  line-height: 1.6;
+  flex: 1;
+  min-height: 80px;
+  box-sizing: border-box;
+}
+.content::placeholder { opacity: 0.35; }
+
+/* Footer */
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 16px 12px;
+  font-size: 0.72rem;
+  opacity: 0.5;
+  font-family: 'Inter', sans-serif;
+}
