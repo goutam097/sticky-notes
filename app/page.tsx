@@ -47,7 +47,8 @@ export default function Home() {
             {searchQuery ? (
               <>
                 <span className={styles.emptyIcon}>🔍</span>
-                <h2>No notes match "{searchQuery}"</h2>
+                {/* <h2>No notes match "{searchQuery}"</h2> */}
+                <h2>No notes match <span>"{searchQuery}"</span></h2>
                 <p>Try a different search term</p>
               </>
             ) : (

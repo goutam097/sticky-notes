@@ -26,12 +26,18 @@ export default function NoteCard({ note, onUpdate, onDelete, onColorChange }: No
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
+  /*   useEffect(() => {
+      if (titleRef.current && note.title === '') {
+        titleRef.current.focus();
+      }
+    }, []); */
+
   useEffect(() => {
     if (titleRef.current && note.title === '') {
       titleRef.current.focus();
     }
-  }, []);
-
+  }, [note.title]);
+  
   const handleDelete = () => {
     setIsDeleting(true);
     setTimeout(() => onDelete(note.id), 300);

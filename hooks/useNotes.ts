@@ -7,7 +7,7 @@ import { Note, NoteColor } from '@/lib/types';
 const STORAGE_KEY = 'sticky-notes-data';
 
 export function useNotes() {
-  const [notes, setNotes] = useState<Note[]>([]);
+  /* const [notes, setNotes] = useState<Note[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Load from localStorage on mount
@@ -26,6 +26,33 @@ export function useNotes() {
   // Persist to localStorage whenever notes change
   useEffect(() => {
     if (!isLoaded) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+    } catch (e) {
+      console.error('Failed to save notes:', e);
+    }
+  }, [notes, isLoaded]); */
+
+  const [notes, setNotes] = useState<Note[]>(() => {
+    if (typeof window === 'undefined') return [];
+
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
     } catch (e) {
