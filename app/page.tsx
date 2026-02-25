@@ -8,7 +8,7 @@ import NoteCard from '@/components/NoteCard';
 import styles from './page.module.css';
 
 export default function Home() {
-  const { notes, isLoaded, addNote, updateNote, deleteNote, changeColor } = useNotes();
+  const { notes, addNote, updateNote, deleteNote, changeColor } = useNotes();
   const { theme, toggleTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
 
