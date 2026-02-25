@@ -22,7 +22,7 @@ export default function Header({
   return (
     <header className={styles.header}>
       <div className={styles.brand}>
-        <div className={styles.logo}>📌1</div>
+        <div className={styles.logo}>📌</div>
         <div>
           <h1 className={styles.title}>StickyBoard</h1>
           <p className={styles.subtitle}>{noteCount} {noteCount === 1 ? 'note' : 'notes'}</p>

@@ -20,7 +20,7 @@ const inter = Inter({
     'A beautiful sticky notes app built with Next.js. Create, organize, and color-code your notes.',
 }; */
 
-export const metadata: Metadata = {
+/* export const metadata: Metadata = {
   title: 'StickyBoard — Your Digital Sticky Notes',
   description:
     'A beautiful sticky notes app built with Next.js. Create, organize, and color-code your notes.',
@@ -40,6 +40,38 @@ export const metadata: Metadata = {
       },
     ],
     type: 'website',
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'StickyBoard — Your Digital Sticky Notes',
+    description:
+      'Create, organize, and color-code your notes beautifully.',
+    images: ['/sticky-note.png'],
+  },
+}; */
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://sticky-notes-ebon.vercel.app/'),
+
+  title: 'StickyBoard — Your Digital Sticky Notes',
+  description:
+    'Create, organize, and color-code your notes beautifully.',
+
+  openGraph: {
+    type: 'website',
+    url: 'https://sticky-notes-ebon.vercel.app/',
+    title: 'StickyBoard — Your Digital Sticky Notes',
+    description:
+      'Create, organize, and color-code your notes beautifully.',
+    images: [
+      {
+        url: '/sticky-note.png',
+        width: 1200,
+        height: 630,
+        alt: 'StickyBoard App Preview',
+      },
+    ],
   },
 
   twitter: {
