@@ -37,7 +37,8 @@ export default function Home() {
       />
 
       <main className={styles.main}>
-        {!isLoaded ? (
+        {/* {!isLoaded ? ( */}
+        {notes.length === 0 ? (
           <div className={styles.loading}>
             <div className={styles.spinner} />
             <p>Loading your notes…</p>
@@ -48,7 +49,12 @@ export default function Home() {
               <>
                 <span className={styles.emptyIcon}>🔍</span>
                 {/* <h2>No notes match "{searchQuery}"</h2> */}
-                <h2>No notes match <span>"{searchQuery}"</span></h2>
+                {/* <h2>No notes match <span>"{searchQuery}"</span></h2> */}
+                <h2>
+                  No notes match {"\""}
+                  {searchQuery}
+                  {"\""}
+                </h2>
                 <p>Try a different search term</p>
               </>
             ) : (

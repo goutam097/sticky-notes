@@ -5,3 +5,8 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+/* allowedDevOrigins: [
+    "http://10.192.212.151:3000",
+    "http://localhost:3000",
+  ], */

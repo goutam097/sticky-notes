@@ -33,7 +33,7 @@ export function useNotes() {
     }
   }, [notes, isLoaded]); */
 
-  const [notes, setNotes] = useState<Note[]>(() => {
+  /* const [notes, setNotes] = useState<Note[]>(() => {
     if (typeof window === 'undefined') return [];
 
     try {
@@ -92,4 +92,65 @@ export function useNotes() {
   }, [updateNote]);
 
   return { notes, isLoaded, addNote, updateNote, deleteNote, changeColor };
+} */
+
+  const [notes, setNotes] = useState<Note[]>(() => {
+    if (typeof window === 'undefined') return [];
+
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Persist notes
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+    } catch (e) {
+      console.error('Failed to save notes:', e);
+    }
+  }, [notes]);
+
+  const addNote = useCallback(() => {
+    const newNote: Note = {
+      id: uuidv4(),
+      title: '',
+      content: '',
+      color: 'yellow',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    setNotes((prev) => [newNote, ...prev]);
+    return newNote.id;
+  }, []);
+
+  const updateNote = useCallback(
+    (id: string, updates: Partial<Omit<Note, 'id' | 'createdAt'>>) => {
+      setNotes((prev) =>
+        prev.map((note) =>
+          note.id === id
+            ? { ...note, ...updates, updatedAt: new Date().toISOString() }
+            : note
+        )
+      );
+    },
+    []
+  );
+
+  const deleteNote = useCallback((id: string) => {
+    setNotes((prev) => prev.filter((note) => note.id !== id));
+  }, []);
+
+  const changeColor = useCallback(
+    (id: string, color: NoteColor) => {
+      updateNote(id, { color });
+    },
+    [updateNote]
+  );
+
+  return { notes, addNote, updateNote, deleteNote, changeColor };
 }
