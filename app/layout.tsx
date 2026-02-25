@@ -66,7 +66,7 @@ export const metadata: Metadata = {
       'Create, organize, and color-code your notes beautifully.',
     images: [
       {
-        url: 'https://github.com/goutam097/sticky-notes/blob/main/public/sticky-note.png',
+        url: '/sticky-note.png',
         width: 1200,
         height: 630,
         alt: 'StickyBoard App Preview',
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     title: 'StickyBoard — Your Digital Sticky Notes',
     description:
       'Create, organize, and color-code your notes beautifully.',
-    images: ['https://github.com/goutam097/sticky-notes/blob/main/public/sticky-note.png'],
+    images: ['/sticky-note.png'],
   },
 };
 
