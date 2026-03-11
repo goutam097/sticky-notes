@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { DragEvent, useEffect, useRef, useState } from 'react';
 import { Note, NoteColor } from '@/lib/types';
 import styles from './NoteCard.module.css';
 
@@ -17,9 +17,26 @@ interface NoteCardProps {
   onUpdate: (id: string, updates: Partial<Note>) => void;
   onDelete: (id: string) => void;
   onColorChange: (id: string, color: NoteColor) => void;
+  onDragStart: (event: DragEvent<HTMLDivElement>, noteId: string) => void;
+  onDragOver: (event: DragEvent<HTMLDivElement>, noteId: string) => void;
+  onDrop: (event: DragEvent<HTMLDivElement>, noteId: string) => void;
+  onDragEnd: () => void;
+  isDragging: boolean;
+  isDropTarget: boolean;
 }
 
-export default function NoteCard({ note, onUpdate, onDelete, onColorChange }: NoteCardProps) {
+export default function NoteCard({
+  note,
+  onUpdate,
+  onDelete,
+  onColorChange,
+  onDragStart,
+  onDragOver,
+  onDrop,
+  onDragEnd,
+  isDragging,
+  isDropTarget,
+}: NoteCardProps) {
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const titleRef = useRef<HTMLTextAreaElement>(null);
@@ -48,14 +65,32 @@ export default function NoteCard({ note, onUpdate, onDelete, onColorChange }: No
     el.style.height = el.scrollHeight + 'px';
   };
 
+  const handleDragStart = (event: DragEvent<HTMLDivElement>) => {
+    if (cardRef.current) {
+      const { width, height } = cardRef.current.getBoundingClientRect();
+      event.dataTransfer.setDragImage(cardRef.current, width / 2, height / 2);
+    }
+
+    onDragStart(event, note.id);
+  };
+
   return (
     <div
       ref={cardRef}
-      className={`${styles.card} ${styles[note.color]} ${isDeleting ? styles.deleting : ''}`}
+      className={`${styles.card} ${styles[note.color]} ${isDeleting ? styles.deleting : ''} ${isDragging ? styles.dragging : ''} ${isDropTarget ? styles.dropTarget : ''}`}
+      onDragOver={(event) => onDragOver(event, note.id)}
+      onDrop={(event) => onDrop(event, note.id)}
     >
       {/* Header */}
       <div className={styles.cardHeader}>
-        <div className={styles.dragHandle}>
+        <div
+          className={styles.dragHandle}
+          draggable
+          onDragStart={handleDragStart}
+          onDragEnd={onDragEnd}
+          title="Drag to reorder"
+          aria-label="Drag to reorder"
+        >
           <span></span><span></span><span></span>
         </div>
         <div className={styles.actions}>

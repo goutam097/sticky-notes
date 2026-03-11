@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { DragEvent, useMemo, useState } from 'react';
 import { useNotes } from '@/hooks/useNotes';
 import { useTheme } from '@/hooks/useTheme';
 import Header from '@/components/Header';
@@ -8,9 +8,11 @@ import NoteCard from '@/components/NoteCard';
 import styles from './page.module.css';
 
 export default function Home() {
-  const { notes, addNote, updateNote, deleteNote, changeColor } = useNotes();
+  const { notes, addNote, updateNote, deleteNote, reorderNotes, changeColor } = useNotes();
   const { theme, toggleTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
+  const [draggedNoteId, setDraggedNoteId] = useState<string | null>(null);
+  const [dropTargetNoteId, setDropTargetNoteId] = useState<string | null>(null);
 
   const filteredNotes = useMemo(() => {
     if (!searchQuery.trim()) return notes;
@@ -23,6 +25,39 @@ export default function Home() {
   const handleAddNote = () => {
     addNote();
     setSearchQuery('');
+  };
+
+  const handleDragStart = (event: DragEvent<HTMLDivElement>, noteId: string) => {
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', noteId);
+    setDraggedNoteId(noteId);
+    setDropTargetNoteId(noteId);
+  };
+
+  const handleDragOver = (event: DragEvent<HTMLDivElement>, noteId: string) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+
+    if (draggedNoteId && draggedNoteId !== noteId && dropTargetNoteId !== noteId) {
+      setDropTargetNoteId(noteId);
+    }
+  };
+
+  const handleDrop = (event: DragEvent<HTMLDivElement>, noteId: string) => {
+    event.preventDefault();
+    const sourceId = event.dataTransfer.getData('text/plain') || draggedNoteId;
+
+    if (sourceId && sourceId !== noteId) {
+      reorderNotes(sourceId, noteId);
+    }
+
+    setDraggedNoteId(null);
+    setDropTargetNoteId(null);
+  };
+
+  const clearDragState = () => {
+    setDraggedNoteId(null);
+    setDropTargetNoteId(null);
   };
 
   return (
@@ -48,8 +83,6 @@ export default function Home() {
             {searchQuery ? (
               <>
                 <span className={styles.emptyIcon}>🔍</span>
-                {/* <h2>No notes match "{searchQuery}"</h2> */}
-                {/* <h2>No notes match <span>"{searchQuery}"</span></h2> */}
                 <h2>
                   No notes match {"\""}
                   {searchQuery}
@@ -76,7 +109,13 @@ export default function Home() {
                 note={note}
                 onUpdate={updateNote}
                 onDelete={deleteNote}
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                onDragEnd={clearDragState}
                 onColorChange={changeColor}
+                isDragging={draggedNoteId === note.id}
+                isDropTarget={dropTargetNoteId === note.id && draggedNoteId !== note.id}
               />
             ))}
           </div>

@@ -145,6 +145,27 @@ export function useNotes() {
     setNotes((prev) => prev.filter((note) => note.id !== id));
   }, []);
 
+  const reorderNotes = useCallback((sourceId: string, targetId: string) => {
+    if (sourceId === targetId) {
+      return;
+    }
+
+    setNotes((prev) => {
+      const sourceIndex = prev.findIndex((note) => note.id === sourceId);
+      const targetIndex = prev.findIndex((note) => note.id === targetId);
+
+      if (sourceIndex === -1 || targetIndex === -1) {
+        return prev;
+      }
+
+      const nextNotes = [...prev];
+      const [movedNote] = nextNotes.splice(sourceIndex, 1);
+      nextNotes.splice(targetIndex, 0, movedNote);
+
+      return nextNotes;
+    });
+  }, []);
+
   const changeColor = useCallback(
     (id: string, color: NoteColor) => {
       updateNote(id, { color });
@@ -152,5 +173,5 @@ export function useNotes() {
     [updateNote]
   );
 
-  return { notes, addNote, updateNote, deleteNote, changeColor };
+  return { notes, addNote, updateNote, deleteNote, reorderNotes, changeColor };
 }
